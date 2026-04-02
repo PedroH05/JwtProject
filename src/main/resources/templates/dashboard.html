@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+          --bg: #0d0d0d;
+          --surface: #141414;
+          --border: #2a2a2a;
+          --accent: #c8f04a;
+          --accent-dark: #a8d03a;
+          --text: #f0ede6;
+          --muted: #6b6b6b;
+        }
+
+        body {
+          background: var(--bg);
+          color: var(--text);
+          font-family: 'DM Sans', sans-serif;
+          min-height: 100vh;
+          overflow: hidden;
+        }
+
+        body::before {
+          content: '';
+          position: fixed;
+          inset: 0;
+          background-image:
+            linear-gradient(var(--border) 1px, transparent 1px),
+            linear-gradient(90deg, var(--border) 1px, transparent 1px);
+          background-size: 60px 60px;
+          opacity: 0.35;
+          pointer-events: none;
+        }
+
+        body::after {
+          content: '';
+          position: fixed;
+          width: 800px;
+          height: 800px;
+          background: radial-gradient(circle, rgba(200,240,74,0.06) 0%, transparent 70%);
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          pointer-events: none;
+        }
+
+        /* Navbar */
+        nav {
+          position: relative;
+          z-index: 10;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 20px 40px;
+          border-bottom: 1px solid var(--border);
+          background: var(--surface);
+          animation: fadeDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @keyframes fadeDown {
+          from { opacity: 0; transform: translateY(-16px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(24px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+          font-family: 'DM Serif Display', serif;
+          font-size: 22px;
+          font-weight: 400;
+          letter-spacing: -0.02em;
+        }
+
+        .logo span { color: var(--accent); }
+
+        .nav-right {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+        }
+
+        .user-badge {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          background: var(--bg);
+          border: 1px solid var(--border);
+          border-radius: 2px;
+          padding: 8px 14px;
+          font-size: 13px;
+          color: var(--muted);
+        }
+
+        .avatar {
+          width: 28px;
+          height: 28px;
+          background: var(--accent);
+          border-radius: 2px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 12px;
+          font-weight: 500;
+          color: #0d0d0d;
+        }
+
+        .btn-logout {
+          background: transparent;
+          border: 1px solid var(--border);
+          border-radius: 2px;
+          color: var(--muted);
+          font-family: 'DM Sans', sans-serif;
+          font-size: 13px;
+          padding: 8px 16px;
+          cursor: pointer;
+          transition: border-color 0.2s, color 0.2s;
+        }
+
+        .btn-logout:hover {
+          border-color: #ff5c5c;
+          color: #ff5c5c;
+        }
+
+        /* Main content */
+        main {
+          position: relative;
+          z-index: 1;
+          max-width: 900px;
+          margin: 0 auto;
+          padding: 60px 40px;
+        }
+
+        .greeting {
+          animation: fadeUp 0.6s 0.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .greeting .tag {
+          font-size: 11px;
+          font-weight: 500;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          color: var(--accent);
+          margin-bottom: 12px;
+        }
+
+        .greeting h1 {
+          font-family: 'DM Serif Display', serif;
+          font-size: 48px;
+          font-weight: 400;
+          line-height: 1.1;
+          margin-bottom: 12px;
+        }
+
+        .greeting p {
+          font-size: 15px;
+          color: var(--muted);
+          font-weight: 300;
+        }
+
+        .divider {
+          height: 1px;
+          background: var(--border);
+          margin: 48px 0;
+          animation: fadeUp 0.6s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .cards {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 16px;
+          animation: fadeUp 0.6s 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .card {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 2px;
+          padding: 28px;
+        }
+
+        .card-label {
+          font-size: 11px;
+          font-weight: 500;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--muted);
+          margin-bottom: 12px;
+        }
+
+        .card-value {
+          font-family: 'DM Serif Display', serif;
+          font-size: 32px;
+          font-weight: 400;
+          color: var(--text);
+          margin-bottom: 6px;
+        }
+
+        .card-sub {
+          font-size: 12px;
+          color: var(--muted);
+        }
+
+        .card-accent { border-top: 2px solid var(--accent); }
+
+        .status {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 12px;
+          color: #4adf8f;
+          margin-top: 6px;
+        }
+
+        .status::before {
+          content: '';
+          width: 6px;
+          height: 6px;
+          background: #4adf8f;
+          border-radius: 50%;
+          animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">auth<span>.</span>system</div>
+    <div class="nav-right">
+        <div class="user-badge">
+            <div class="avatar" id="avatar">?</div>
+            <span id="user-name">Carregando...</span>
+        </div>
+        <button class="btn-logout" onclick="logout()">Sair</button>
+    </div>
+</nav>
+
+<main>
+    <div class="greeting">
+        <p class="tag">Painel principal</p>
+        <h1>Olá, <span id="greeting-name">usuário</span>.</h1>
+        <p>Você está autenticado com sucesso no sistema.</p>
+        <div class="status">Sessão ativa</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="cards">
+        <div class="card card-accent">
+            <p class="card-label">Status</p>
+            <p class="card-value">Ativo</p>
+            <p class="card-sub">Conta verificada</p>
+        </div>
+        <div class="card">
+            <p class="card-label">Autenticação</p>
+            <p class="card-value">JWT</p>
+            <p class="card-sub">Token válido por 24h</p>
+        </div>
+        <div class="card">
+            <p class="card-label">Acesso</p>
+            <p class="card-value">Seguro</p>
+            <p class="card-sub">Spring Security ativo</p>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Decodifica o token JWT para pegar o nome do usuário
+    function parseJwt(token) {
+      try {
+        const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+        return JSON.parse(atob(base64));
+      } catch {
+        return null;
+      }
+    }
+
+    const token = localStorage.getItem('jwt');
+
+    if (!token) {
+      window.location.href = '/auth/login';
+    } else {
+      const payload = parseJwt(token);
+      if (payload) {
+        const email = payload.sub;
+        const name = email.split('@')[0];
+        const displayName = name.charAt(0).toUpperCase() + name.slice(1);
+
+        document.getElementById('user-name').textContent = email;
+        document.getElementById('greeting-name').textContent = displayName;
+        document.getElementById('avatar').textContent = displayName.charAt(0).toUpperCase();
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('jwt');
+      window.location.href = '/auth/login';
+    }
+</script>
+</body>
+</html>

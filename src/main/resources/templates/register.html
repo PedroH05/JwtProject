@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Conta</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0d;
+      --surface: #141414;
+      --border: #2a2a2a;
+      --accent: #c8f04a;
+      --accent-dark: #a8d03a;
+      --text: #f0ede6;
+      --muted: #6b6b6b;
+      --error: #ff5c5c;
+      --success: #4adf8f;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(200,240,74,0.08) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 56px 48px;
+      width: 100%;
+      max-width: 420px;
+      animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 4px 10px;
+      border-radius: 2px;
+      margin-bottom: 24px;
+      animation: fadeUp 0.6s 0.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 36px;
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 8px;
+      animation: fadeUp 0.6s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 40px;
+      font-weight: 300;
+      animation: fadeUp 0.6s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .field {
+      margin-bottom: 20px;
+      animation: fadeUp 0.6s 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .field:nth-child(2) { animation-delay: 0.28s; }
+    .field:nth-child(3) { animation-delay: 0.31s; }
+    .field:nth-child(4) { animation-delay: 0.34s; }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      padding: 14px 16px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus { border-color: var(--accent); }
+    input::placeholder { color: var(--muted); }
+
+    .btn {
+      width: 100%;
+      background: var(--accent);
+      color: #0d0d0d;
+      border: none;
+      border-radius: 2px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      padding: 15px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s, transform 0.1s;
+      animation: fadeUp 0.6s 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .btn:hover { background: var(--accent-dark); }
+    .btn:active { transform: scale(0.99); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .error-msg {
+      font-size: 13px;
+      color: var(--error);
+      margin-top: 14px;
+      display: none;
+    }
+
+    .success-msg {
+      font-size: 13px;
+      color: var(--success);
+      margin-top: 14px;
+      display: none;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 32px 0;
+      animation: fadeUp 0.6s 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .footer {
+      margin-top: 0;
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+      animation: fadeUp 0.6s 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <div class="badge">Novo por aqui?</div>
+  <h1>Crie sua conta.</h1>
+  <p class="subtitle">Preencha os dados abaixo para começar.</p>
+
+  <div class="field">
+    <label for="name">Nome</label>
+    <input type="text" id="name" placeholder="Seu nome completo" autocomplete="name">
+  </div>
+
+  <div class="field">
+    <label for="email">E-mail</label>
+    <input type="email" id="email" placeholder="seu@email.com" autocomplete="email">
+  </div>
+
+  <div class="field">
+    <label for="password">Senha</label>
+    <input type="password" id="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+  </div>
+
+  <button class="btn" id="btn-register">Criar conta</button>
+  <p class="error-msg" id="error-msg"></p>
+  <p class="success-msg" id="success-msg">Conta criada! Redirecionando...</p>
+
+  <div class="divider"></div>
+
+  <p class="footer">Já tem uma conta? <a href="/auth/login">Entrar</a></p>
+</div>
+
+<script>
+  const btn = document.getElementById('btn-register');
+  const errorMsg = document.getElementById('error-msg');
+  const successMsg = document.getElementById('success-msg');
+
+  btn.addEventListener('click', async () => {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    errorMsg.style.display = 'none';
+    successMsg.style.display = 'none';
+
+    if (!name || !email || !password) {
+      errorMsg.textContent = 'Preencha todos os campos.';
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    if (password.length < 6) {
+      errorMsg.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Criando conta...';
+
+    try {
+      const res = await fetch('/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password })
+      });
+
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(err);
+      }
+
+      const data = await res.json();
+      localStorage.setItem('jwt', data.token);
+      successMsg.style.display = 'block';
+      setTimeout(() => window.location.href = '/auth/login', 1500);
+    } catch (e) {
+      errorMsg.textContent = e.message.includes('cadastrado')
+        ? 'Este e-mail já está cadastrado.'
+        : 'Erro ao criar conta. Tente novamente.';
+      errorMsg.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Criar conta';
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') btn.click();
+  });
+</script>
+</body>
+</html>
